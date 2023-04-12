@@ -51,9 +51,9 @@ const checkUserCredentials = (username, password) => {
     // check if the user exists in the database using sequelize
     let user = User.findOne({where: {username: username, password: password}});
     if(user){
-        return true;
+        return {isAuthorized: true};
     }else{
-        return false;
+        return {isAuthorized: false};
     }
 };
 
@@ -76,7 +76,7 @@ app.post('/auth', (req, res) => {
   }
 
   // Generate JWT
-  const payload = { username: username, pdfName: 'user_1.pdf' };
+  const payload = { username: username };
   const options = { expiresIn: '1h' };
   const token = jwt.sign(payload, secretKey, options);
 
@@ -92,13 +92,14 @@ app.get('/pdf', (req, res) => {
   const token = req.headers.authorization;
 
   // Verify JWT
-  jwt.verify(token, secretKey, (err, decoded) => {
+  jwt.verify(token, secretKey, async (err, decoded) => {
     if (err) {
       return res.status(401).send('Unauthorized');
     }
-
+    let user = await User.findOne({where: {username: decoded.username}});
+    console.log(user);
     // Read the corresponding PDF file from the server's file system
-    const pdfName = decoded.pdfName;
+    const pdfName = user.file;
     const filePath = `./pdfs/${pdfName}`;
 
     fs.readFile(filePath, (err, data) => {
