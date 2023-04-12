@@ -14,42 +14,42 @@ This API allows users to authenticate and retrieve a PDF file.
 ## API Documentation:
 
 ### Authentication API:
-Endpoint: /auth
-Method: POST
-Authentication Required: No
-Request Parameters:
-{
-  "username": "string",
-  "password": "string"
-}
+#### Endpoint: /auth
+#### Method: POST
+#### Authentication Required: No
+#### Request Parameters:
+#### {
+####   "username": "string",
+####   "password": "string"
+#### }
 
-Response:
-Upon successful authentication, the API will return a JWT token that can be used to access the PDF file.
-{
-  "token": "string"
-}
+#### Response:
+#### Upon successful authentication, the API will return a JWT token that can be used to access the PDF file.
+#### {
+####   "token": "string"
+#### }
 
-Error Response:
-{
-  "message": "string"
-}
+#### Error Response:
+#### {
+####   "message": "string"
+#### }
 
 ### PDF Retrieval API:
-Endpoint: /pdf
-Method: GET
-Authentication Required: Yes (JWT Token)
-Request Headers:
-{
-  "Authorization": "{JWT Token}"
-}
+#### Endpoint: /pdf
+#### Method: GET
+#### Authentication Required: Yes (JWT Token)
+#### Request Headers:
+#### {
+####   "Authorization": "{JWT Token}"
+#### }
 
-Response:
-Upon successful authentication, the API will return the PDF file that has been previously saved by the user.
+#### Response:
+#### Upon successful authentication, the API will return the PDF file that has been previously saved by the user.
 
-Error Response:
-{
-  "message": "string"
-}
+#### Error Response:
+#### {
+####   "message": "string"
+#### }
 
 ### Note: 
-The PDF file should be saved by the user in the server and the file location should be referenced in the API endpoint /pdf. The API will then return the file based on the user's authentication.
+#### The PDF file should be saved by the user in the server and the file location should be referenced in the API endpoint /pdf. The API will then return the file based on the user's authentication.
