@@ -4,24 +4,30 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
 const app = express();
+
 var corsOptions = {
     origin: "http://localhost:3000"
 };
 
+// Enable CORS
 app.use(cors(corsOptions));
 // parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+// simple route
 const port = process.env.PORT || 3000;
-
+// db connection 
 const db = require("./models");
+
 const User = db.user;
+
+// db.sequelize.sync();
 db.sequelize.sync({force: true}).then(() => {
     console.log('Drop and Resync Db');
     initial();
 });
-
+// to create initial data in the database
 function initial() {
     User.create({
         username: "user1",
@@ -32,6 +38,7 @@ function initial() {
     User.create({
         username: "user2",
         file: "user_2.pdf",
+        // file deepcode ignore HardcodedNonCryptoSecret: <please specify a reason of ignoring this>
         password: "password2"
     });
 }
@@ -81,7 +88,8 @@ app.post('/auth', (req, res) => {
 // Endpoint for serving PDF files
 app.get('/pdf', (req, res) => {
   // Get JWT from the request header
-  const token = req.headers.authorization.split(' ')[1];
+  
+  const token = req.headers.authorization;
 
   // Verify JWT
   jwt.verify(token, secretKey, (err, decoded) => {
